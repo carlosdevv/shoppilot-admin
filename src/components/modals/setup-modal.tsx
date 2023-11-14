@@ -1,9 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
+import { useToast } from "@/components/ui/use-toast";
 import { useModalStore } from "@/hooks/store/use-modal";
+import api from "@/lib/api";
 
 const formSchema = z.object({
   name: z.string().min(1, "Informe o nome da loja."),
@@ -23,6 +27,7 @@ const formSchema = z.object({
 
 export const SetupModal = () => {
   const { isOpen, onClose } = useModalStore();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,8 +36,27 @@ export const SetupModal = () => {
     },
   });
 
+  const { mutateAsync: createStore, isPending } = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      return api.post("/api/stores", values);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Sucesso",
+        description: "Sua loja foi criada com sucesso.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro ao criar sua loja.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    await createStore(values);
   };
 
   return (
@@ -53,17 +77,30 @@ export const SetupModal = () => {
                   <FormItem>
                     <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <Input placeholder="E-commerce" {...field} />
+                      <Input
+                        disabled={isPending}
+                        placeholder="E-commerce"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant={"outline"} onClick={onClose}>
+                <Button
+                  disabled={isPending}
+                  variant={"outline"}
+                  onClick={onClose}
+                >
                   Cancelar
                 </Button>
-                <Button type="submit">Continuar</Button>
+                <Button disabled={isPending} type="submit">
+                  {isPending && (
+                    <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Continuar
+                </Button>
               </div>
             </form>
           </Form>
