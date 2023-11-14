@@ -7,6 +7,7 @@ import { ModalProvider } from "@/providers/modal-providers";
 import { Toaster } from "@/components/ui/toaster";
 import { AppProviders } from "@/providers/app-providers";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={cn("dark", inter.className)}>
           <AppProviders>
             <Toaster />
             <ModalProvider />

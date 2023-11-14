@@ -14,6 +14,11 @@ export const MainNav = ({
 
   const routes = [
     {
+      href: `/${params.storeId}`,
+      label: "Dashboard",
+      active: pathname === `/${params.storeId}`,
+    },
+    {
       href: `/${params.storeId}/settings`,
       label: "Settings",
       active: pathname === `/${params.storeId}/settings`,
@@ -28,7 +33,7 @@ export const MainNav = ({
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary",
             route.active
-              ? "text-black dark:text-white"
+              ? "text-black dark:text-primary"
               : "text-muted-foreground"
           )}
         >

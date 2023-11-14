@@ -1,4 +1,4 @@
-import { Check, ChevronsUpDown, Loader, LucideIcon, PlusCircle, Store } from "lucide-react";
+import { Check, ChevronsUpDown, Loader, LucideIcon, PlusCircle, Store, Trash } from "lucide-react";
 
 export type IconType = LucideIcon;
 
@@ -7,5 +7,6 @@ export const Icons = {
   store: Store,
   chevronsArrow: ChevronsUpDown,
   check: Check,
-  addCircle: PlusCircle
+  addCircle: PlusCircle,
+  trash: Trash,
 };

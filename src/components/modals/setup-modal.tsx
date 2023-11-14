@@ -76,7 +76,7 @@ export const SetupModal = () => {
                     <FormControl>
                       <Input
                         disabled={isPending}
-                        placeholder="E-commerce"
+                        placeholder="nome-da-sua-store"
                         {...field}
                       />
                     </FormControl>
