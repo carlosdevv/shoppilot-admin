@@ -22,7 +22,7 @@ import { useModalStore } from "@/hooks/store/use-modal";
 import api from "@/lib/api";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Informe o nome da loja."),
+  name: z.string().min(1, "Informe o nome da store."),
 });
 
 export const SetupModal = () => {
@@ -46,7 +46,7 @@ export const SetupModal = () => {
     onError: () => {
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao criar sua loja.",
+        description: "Ocorreu um erro ao criar sua store.",
         variant: "destructive",
       });
     },
@@ -58,8 +58,8 @@ export const SetupModal = () => {
 
   return (
     <Modal
-      title="Criar Loja"
-      description="Adicione uma nova loja para gerenciar seus produtos."
+      title="Criar Store"
+      description="Adicione uma nova store para gerenciar seus produtos."
       isOpen={isOpen}
       onClose={onClose}
     >

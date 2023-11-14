@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
-import prisma from "@/lib/prismadb";
+import prismadb from "@/lib/prismadb";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     if (!name) return new NextResponse("Name is required", { status: 400 });
 
-    const store = await prisma.store.create({
+    const store = await prismadb.store.create({
       data: {
         name,
         userId,
