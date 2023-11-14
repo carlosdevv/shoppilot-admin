@@ -40,11 +40,8 @@ export const SetupModal = () => {
     mutationFn: (values: z.infer<typeof formSchema>) => {
       return api.post("/api/stores", values);
     },
-    onSuccess: () => {
-      toast({
-        title: "Sucesso",
-        description: "Sua loja foi criada com sucesso.",
-      });
+    onSuccess: (response) => {
+      window.location.assign(`/${response.data.id}`); // This will completely refresh the page to get the new store.
     },
     onError: () => {
       toast({

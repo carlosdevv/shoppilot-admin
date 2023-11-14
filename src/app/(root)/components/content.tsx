@@ -1,7 +1,7 @@
 "use client";
 
 import { useModalStore } from "@/hooks/store/use-modal";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export const SetupPageContent = () => {
   const { onOpen, isOpen } = useModalStore();
@@ -10,5 +10,5 @@ export const SetupPageContent = () => {
     if (!isOpen) onOpen();
   }, [isOpen, onOpen]);
 
-  return <div>SetupPageContent</div>;
+  return null;
 };
