@@ -2,6 +2,7 @@
 
 import { Icons } from "@/components/icons";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { ApiAlert } from "@/components/ui/api-alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -114,7 +115,10 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
         onConfirm={() => onDeleteStore()}
       />
       <div className="flex items-center justify-between">
-        <Heading title="Settings" description="Manage your store settings" />
+        <Heading
+          title="Configurações"
+          description="Gerencie as configurações de sua store"
+        />
         <Button
           disabled={isPending}
           variant="destructive"
@@ -136,7 +140,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -157,6 +161,12 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
           </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin}/api/${params.storeId}`}
+        variant="public"
+      />
     </>
   );
 };

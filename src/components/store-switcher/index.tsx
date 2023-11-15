@@ -1,17 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Store } from "@prisma/client";
-import { useModalStore } from "@/hooks/store/use-modal";
-import { useParams, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -21,6 +11,16 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useStoreModal } from "@/hooks/use-modal";
+import { cn } from "@/lib/utils";
+import { Store } from "@prisma/client";
+import { useParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -31,7 +31,7 @@ type StoreSwitcherProps = PopoverTriggerProps & {
 };
 
 const StoreSwitcher = ({ className, items = [] }: StoreSwitcherProps) => {
-  const { onOpen: onOpenStoreModal } = useModalStore();
+  const { onOpen: onOpenStoreModal } = useStoreModal();
   const params = useParams();
   const router = useRouter();
 

@@ -18,15 +18,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { useToast } from "@/components/ui/use-toast";
-import { useModalStore } from "@/hooks/store/use-modal";
 import api from "@/lib/api";
+import { useStoreModal } from "@/hooks/use-modal";
 
 const formSchema = z.object({
   name: z.string().min(1, "Informe o nome da store."),
 });
 
 export const SetupModal = () => {
-  const { isOpen, onClose } = useModalStore();
+  const { isOpen, onClose } = useStoreModal();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({

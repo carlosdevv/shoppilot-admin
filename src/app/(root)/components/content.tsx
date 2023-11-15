@@ -1,10 +1,10 @@
 "use client";
 
-import { useModalStore } from "@/hooks/store/use-modal";
+import { useStoreModal } from "@/hooks/use-modal";
 import { useEffect } from "react";
 
 export const SetupPageContent = () => {
-  const { onOpen, isOpen } = useModalStore();
+  const { onOpen, isOpen } = useStoreModal();
 
   useEffect(() => {
     if (!isOpen) onOpen();

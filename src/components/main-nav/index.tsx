@@ -20,7 +20,7 @@ export const MainNav = ({
     },
     {
       href: `/${params.storeId}/settings`,
-      label: "Settings",
+      label: "Configurações",
       active: pathname === `/${params.storeId}/settings`,
     },
   ];
