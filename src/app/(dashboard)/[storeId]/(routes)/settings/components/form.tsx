@@ -16,6 +16,7 @@ import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
+import { useOrigin } from "@/hooks/use-origin";
 import api from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Store } from "@prisma/client";
@@ -38,6 +39,7 @@ type SettingsFormValues = z.infer<typeof formSchema>;
 export const SettingsForm = ({ initialData }: SettingsFormProps) => {
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
   const { toast } = useToast();
 
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);

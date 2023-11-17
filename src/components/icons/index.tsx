@@ -2,8 +2,10 @@ import {
   Check,
   ChevronsUpDown,
   Copy,
+  ImagePlus,
   Loader,
   LucideIcon,
+  Plus,
   PlusCircle,
   Server,
   Store,
@@ -20,5 +22,7 @@ export const Icons = {
   addCircle: PlusCircle,
   trash: Trash,
   server: Server,
-  copy: Copy
+  copy: Copy,
+  plus: Plus,
+  addImage: ImagePlus
 };
