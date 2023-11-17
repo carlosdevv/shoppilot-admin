@@ -16,7 +16,6 @@ import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { useOrigin } from "@/hooks/use-origin";
 import api from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Billboard } from "@prisma/client";
@@ -40,19 +39,18 @@ type BillboardFormValues = z.infer<typeof formSchema>;
 export const BillboardForm = ({ initialData }: BillboardFormProps) => {
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
   const { toast } = useToast();
 
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
 
-  const title = initialData ? "Editar banner" : "Criar banner";
+  const title = initialData ? "Edit billboard" : "Create billboard";
   const description = initialData
-    ? "Edite o banner de destaque"
-    : "Adicione um novo banner de destaque";
+    ? "Edit a billboard"
+    : "Add a new billboard to your store.";
   const toastMessage = initialData
-    ? "Banner atualizado com sucesso."
-    : "Banner criado com sucesso.";
-  const action = initialData ? "Salvar alterações" : "Criar banner";
+    ? "Billboard updated."
+    : "Billboard created successfully";
+  const action = initialData ? "Save changes" : "Create";
 
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
@@ -70,22 +68,22 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     },
     onSuccess: () => {
       router.refresh();
-      router.push("/");
+      router.push(`/${params.storeId}/billboards`);
       toast({
-        title: "Sucesso",
-        description: "Banner deletado com sucesso.",
+        title: "Success",
+        description: "Billboard deleted successfully.",
       });
     },
     onError: () => {
       toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao deletar seu banner.",
+        title: "Error",
+        description: "Something went wrong.",
         variant: "destructive",
       });
     },
   });
 
-  const { mutateAsync: createBillboard, isPending } = useMutation({
+  const { mutateAsync: createOrUpdateBillboard, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof formSchema>) => {
       if (initialData) {
         return api.patch(
@@ -98,22 +96,23 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     },
     onSuccess: () => {
       router.refresh();
+      router.push(`/${params.storeId}/billboards`);
       toast({
-        title: "Sucesso",
+        title: "Success",
         description: `${toastMessage}`,
       });
     },
     onError: () => {
       toast({
-        title: "Erro",
-        description: "Ocorreu um erro.",
+        title: "Error",
+        description: "Something went wrong.",
         variant: "destructive",
       });
     },
   });
 
   const onSubmit = async (values: BillboardFormValues) => {
-    await createBillboard(values);
+    await createOrUpdateBillboard(values);
   };
 
   const onDeleteBillboard = async () => {
@@ -121,9 +120,9 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
       await deleteBillboard();
     } catch (error) {
       toast({
-        title: "Aviso",
+        title: "Attention",
         description:
-          "Certifique-se que você deletou todas as categorias utilizando esse banner primeiro.",
+          "Make sure you deleted all categories using this billboard.",
       });
     } finally {
       setIsAlertModalOpen(false);
@@ -162,7 +161,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
             name="imageUrl"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Imagem de fundo</FormLabel>
+                <FormLabel>Billboard image</FormLabel>
                 <FormControl>
                   <ImageUpload
                     value={field.value ? [field.value] : []}
@@ -181,11 +180,11 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
               name="label"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Texto</FormLabel>
+                  <FormLabel>Label</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="Texto presente no banner"
+                      placeholder="Label name"
                       {...field}
                     />
                   </FormControl>
@@ -202,7 +201,6 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   );
 };

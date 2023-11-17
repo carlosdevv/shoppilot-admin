@@ -33,8 +33,8 @@ export const ApiAlert = ({
   const onCopy = () => {
     navigator.clipboard.writeText(description);
     toast({
-      title: "Copiado",
-      description: "API Route copiado para a área de transferência.",
+      title: "Copy",
+      description: "API Route copied to the clipboard.",
     });
   };
 

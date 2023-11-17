@@ -57,14 +57,14 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       router.refresh();
       router.push("/");
       toast({
-        title: "Sucesso",
-        description: "Store deletada com sucesso.",
+        title: "Success",
+        description: "Store is deleted successfully.",
       });
     },
     onError: () => {
       toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao deletar sua store.",
+        title: "Error",
+        description: "Something went wrong while deleting your store.",
         variant: "destructive",
       });
     },
@@ -77,14 +77,14 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
     onSuccess: () => {
       router.refresh();
       toast({
-        title: "Sucesso",
-        description: "Store atualizada com sucesso.",
+        title: "Success",
+        description: "Store is updated successfully.",
       });
     },
     onError: () => {
       toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao atualizar sua store.",
+        title: "Error",
+        description: "Something went wrong while updating your store.",
         variant: "destructive",
       });
     },
@@ -99,9 +99,9 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       await deleteStore();
     } catch (error) {
       toast({
-        title: "Aviso",
+        title: "Attention",
         description:
-          "Certifique-se que você deletou todos os produtos e categorias primeiro.",
+          "Make sure you don't have any billboards before deleting your store.",
       });
     } finally {
       setIsAlertModalOpen(false);
@@ -118,8 +118,8 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       />
       <div className="flex items-center justify-between">
         <Heading
-          title="Configurações"
-          description="Gerencie as configurações de sua store"
+          title="Settings"
+          description="Manage your store settings."
         />
         <Button
           disabled={isPending}
@@ -142,11 +142,11 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="Nome da Store"
+                      placeholder="Store name"
                       {...field}
                     />
                   </FormControl>
@@ -159,7 +159,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
             {isPending && (
               <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Salvar alterações
+            Save changes
           </Button>
         </form>
       </Form>

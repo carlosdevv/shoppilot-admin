@@ -20,12 +20,12 @@ export const MainNav = ({
     },
     {
       href: `/${params.storeId}/billboards`,
-      label: "Banners",
+      label: "Billboards",
       active: pathname === `/${params.storeId}/billboards`,
     },
     {
       href: `/${params.storeId}/settings`,
-      label: "Configurações",
+      label: "Settings",
       active: pathname === `/${params.storeId}/settings`,
     },
   ];

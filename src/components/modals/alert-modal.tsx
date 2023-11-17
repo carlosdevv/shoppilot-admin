@@ -28,18 +28,18 @@ export const AlertModal = ({
 
   return (
     <Modal
-      title="Você tem certeza?"
-      description="Essa ação não pode ser revertida."
+      title="Are you sure?"
+      description="This action cannot be undone."
       isOpen={isOpen}
       onClose={onClose}
     >
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
         <Button variant="outline" disabled={loading} onClick={onClose}>
-          Cancelar
+          Cancel
         </Button>
         <Button variant="destructive" disabled={loading} onClick={onConfirm}>
           {loading && <Icons.loading className="mr-2 h-4 w-4 animate-spin" />}
-          Apagar
+          Delete
         </Button>
       </div>
     </Modal>
