@@ -12,66 +12,76 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Heading } from "@/components/ui/heading";
-import ImageUpload from "@/components/ui/image-upload";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import api from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Billboard } from "@prisma/client";
+import { Billboard, Category } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-type BillboardFormProps = {
-  initialData: Billboard | null;
+type CategoryFormProps = {
+  initialData: Category | null;
+  billboards: Billboard[];
 };
 
 const formSchema = z.object({
-  label: z.string().min(1),
-  imageUrl: z.string().min(1),
+  name: z.string().min(1),
+  billboardId: z.string().min(1),
 });
 
-type BillboardFormValues = z.infer<typeof formSchema>;
+type CategoryFormValues = z.infer<typeof formSchema>;
 
-export const BillboardForm = ({ initialData }: BillboardFormProps) => {
+export const CategoryForm = ({
+  initialData,
+  billboards,
+}: CategoryFormProps) => {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
 
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
 
-  const title = initialData ? "Edit billboard" : "Create billboard";
+  const title = initialData ? "Edit category" : "Create category";
   const description = initialData
-    ? "Edit a billboard"
-    : "Add a new billboard to your store.";
+    ? "Edit a category"
+    : "Add a new category to your store.";
   const toastMessage = initialData
-    ? "Billboard updated."
-    : "Billboard created successfully";
+    ? "Category updated."
+    : "Category created successfully";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: "",
-      imageUrl: "",
+      name: "",
+      billboardId: "",
     },
   });
 
-  const { mutateAsync: deleteBillboard, isPending: isDeleting } = useMutation({
+  const { mutateAsync: deleteCategory, isPending: isDeleting } = useMutation({
     mutationFn: () => {
       return api.delete(
-        `/api/${params.storeId}/billboards/${params.billboardId}`
+        `/api/${params.storeId}/categories/${params.categoryId}`
       );
     },
     onSuccess: () => {
-      router.push(`/${params.storeId}/billboards`);
+      router.push(`/${params.storeId}/categories`);
       router.refresh();
       toast({
         title: "Success",
-        description: "Billboard deleted successfully.",
+        description: "Category deleted successfully.",
       });
     },
     onError: () => {
@@ -83,19 +93,19 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     },
   });
 
-  const { mutateAsync: createOrUpdateBillboard, isPending } = useMutation({
+  const { mutateAsync: createOrUpdateCategory, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof formSchema>) => {
       if (initialData) {
         return api.patch(
-          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          `/api/${params.storeId}/categories/${params.categoryId}`,
           data
         );
       }
 
-      return api.post(`/api/${params.storeId}/billboards`, data);
+      return api.post(`/api/${params.storeId}/categories`, data);
     },
     onSuccess: () => {
-      router.push(`/${params.storeId}/billboards`);
+      router.push(`/${params.storeId}/categories`);
       router.refresh();
       toast({
         title: "Success",
@@ -111,18 +121,17 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     },
   });
 
-  const onSubmit = async (values: BillboardFormValues) => {
-    await createOrUpdateBillboard(values);
+  const onSubmit = async (values: CategoryFormValues) => {
+    await createOrUpdateCategory(values);
   };
 
-  const onDeleteBillboard = async () => {
+  const onDeleteCategory = async () => {
     try {
-      await deleteBillboard();
+      await deleteCategory();
     } catch (error) {
       toast({
         title: "Attention",
-        description:
-          "Make sure you deleted all categories using this billboard.",
+        description: "Make sure you deleted all products using this category.",
       });
     } finally {
       setIsAlertModalOpen(false);
@@ -135,7 +144,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
         isOpen={isAlertModalOpen}
         loading={isDeleting}
         onClose={() => setIsAlertModalOpen(false)}
-        onConfirm={() => onDeleteBillboard()}
+        onConfirm={() => onDeleteCategory()}
       />
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
@@ -156,38 +165,52 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Billboard image</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    disabled={isPending}
-                    onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange("")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="grid grid-cols-3 gap-8">
+          <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="label"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Label</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="Label name"
+                      placeholder="Category name"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="billboardId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Billboard</FormLabel>
+                  <Select
+                    disabled={isPending}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a billboard"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {billboards.map((billboard) => (
+                        <SelectItem key={billboard.id} value={billboard.id}>
+                          {billboard.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

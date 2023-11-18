@@ -54,8 +54,8 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
       return api.delete(`/api/stores/${params.storeId}`);
     },
     onSuccess: () => {
-      router.refresh();
       router.push("/");
+      router.refresh();
       toast({
         title: "Success",
         description: "Store is deleted successfully.",
