@@ -8,6 +8,7 @@ import {
   ImagePlus,
   Loader,
   LucideIcon,
+  Moon,
   MoreHorizontal,
   Package,
   Plus,
@@ -15,6 +16,7 @@ import {
   Search,
   Server,
   Store,
+  Sun,
   Trash,
 } from "lucide-react";
 
@@ -37,4 +39,6 @@ export const Icons = {
   creditCard: CreditCard,
   dolar: DollarSign,
   package: Package,
+  lightMode: Sun,
+  darkMode: Moon,
 };
