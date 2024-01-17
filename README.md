@@ -27,6 +27,7 @@ Maybe soon, I can transform this project into a SaaS and make it generic to supp
 ### # To improve
 The project has some features and fixes that I want to improve in the next versions:
 - [ ] Add Eslint
+- [ ] Unit and e2e Tests
 - [ ] Organize the architecture adding custom hooks for the components
 - [ ] Create CI/CD Pipeline
 - [ ] Add trPC
